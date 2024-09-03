@@ -1,3 +1,5 @@
+import { compareAsc,format } from "date-fns";
+
 const PRIORITY = Object.freeze({
     LOW: 'Low',
     MEDIUM: 'Medium',
@@ -15,7 +17,8 @@ export function createTodo(title,desc,dueDate,priority)
     }
 }
 
-const projects ={}
+const projects = new Map();
+
 
 export function listOfProjects()
 {

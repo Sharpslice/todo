@@ -1,3 +1,7 @@
 .button:hover{
    background-color: #d3d3d3; 
 }
+
+.projectModal{
+    border: 1px solid black;
+}
