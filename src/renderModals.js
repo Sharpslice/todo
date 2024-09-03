@@ -24,6 +24,7 @@ export function renderNewProjectModal(){
     addBtn.textContent="add";
 
     const cancelBtn = document.createElement("button");
+    cancelBtn.type="button";
     cancelBtn.textContent="cancel";
 
     
