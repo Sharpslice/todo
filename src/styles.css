@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#container{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 25% 35% 35%;
+    
+}
+
+#sideBar{
+    grid-column: 1/2;
+    
+}
+#tasks{
+    
+    
+}
+
+#projects{
+
+}
+
+
+#content{
+    grid-column: 2/3;
+}
+#expanded{
+   grid-column: 3/4;
+}
