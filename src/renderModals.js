@@ -4,7 +4,7 @@ const body= document.querySelector("#container")
 export function renderNewProjectModal(){
     const modal = document.createElement("div");
     modal.classList.add("projectModal", "hidden");
-    modal.textContent="Modal";
+    
 
     const form = document.createElement("form");
     form.id="projectForm";
@@ -25,6 +25,7 @@ export function renderNewProjectModal(){
 
     const cancelBtn = document.createElement("button");
     cancelBtn.type="button";
+    cancelBtn.id = "modalCancelBtn";
     cancelBtn.textContent="cancel";
 
     
@@ -37,4 +38,7 @@ export function renderNewProjectModal(){
     
     modal.append(form);
     body.appendChild(modal);
+
+
+    
 }

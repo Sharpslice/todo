@@ -1,12 +1,12 @@
-const sidebar = document.querySelector('#sideBar');
-const buttonDivs = sidebar.querySelectorAll(".button");
+
 import { createTodo, listOfProjects } from "./toDoFactory";
 import { renderNewProjectModal } from "./renderModals";
 import loadProjects from "./renderProjectList";
+import loadContent from "./renderContentPage";
+import modalCancelEventListener from "./modalEvent";
 
-
-
-
+const sidebar = document.querySelector('#sideBar');
+const buttonDivs = sidebar.querySelectorAll(".button");
 const buttonActions ={
     'newProjectBtn': ()=> renderNewProjectModal()
     
@@ -18,13 +18,18 @@ export function setUpButtonEventListeners(){
             const action = buttonActions[e.target.id];
             if(action)
             {
+                
                 action();
+                modalCancelEventListener();
             }
+            console.log(e.target)
         })
     });
+    
     document.addEventListener('click',(e)=>{
         if(e.target && e.target.id==="projectAddBtn")
         {
+            
             const projectName = document.getElementById("projectName")
             if(listOfProjects().has(projectName.value))
             {
@@ -37,6 +42,13 @@ export function setUpButtonEventListeners(){
             console.log(listOfProjects());
         }
     })
+
+    const projectList = document.querySelector("#projectList");
+    projectList.addEventListener('click',e=>{
+        if(e.target.classList.contains("button"))
+            {
+                loadContent(e.target.textContent);
+            }
+    })
     
 }
-
