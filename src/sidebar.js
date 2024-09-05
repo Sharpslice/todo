@@ -2,8 +2,8 @@
 import { createTodo, listOfProjects } from "./toDoFactory";
 import { renderNewProjectModal } from "./renderModals";
 import loadProjects from "./renderProjectList";
-
-
+import loadContent from "./renderContentPage";
+import modalCancelEventListener from "./modalEvent";
 
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
@@ -20,6 +20,7 @@ export function setUpButtonEventListeners(){
             {
                 
                 action();
+                modalCancelEventListener();
             }
             console.log(e.target)
         })
@@ -28,6 +29,7 @@ export function setUpButtonEventListeners(){
     document.addEventListener('click',(e)=>{
         if(e.target && e.target.id==="projectAddBtn")
         {
+            
             const projectName = document.getElementById("projectName")
             if(listOfProjects().has(projectName.value))
             {
@@ -45,7 +47,7 @@ export function setUpButtonEventListeners(){
     projectList.addEventListener('click',e=>{
         if(e.target.classList.contains("button"))
             {
-                console.log('click')
+                loadContent(e.target.textContent);
             }
     })
     
