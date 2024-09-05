@@ -24,3 +24,9 @@ export function listOfProjects()
 {
     return projects;
 }
+
+export function addTask(projectName,toDoTask)
+{
+    // console.log(listOfProjects().get(projectName));
+    listOfProjects().get(projectName).push(toDoTask);
+}

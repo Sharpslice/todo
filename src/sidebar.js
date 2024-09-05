@@ -3,14 +3,15 @@ import { createTodo, listOfProjects } from "./toDoFactory";
 import { renderNewProjectModal } from "./renderModals";
 import loadProjects from "./renderProjectList";
 import loadContent from "./renderContentPage";
-import modalCancelEventListener from "./modalEvent";
+import modalButtonEventListener from "./modalEvent";
 
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
 const buttonActions ={
-    'newProjectBtn': ()=> renderNewProjectModal()
-    
+    'newProjectBtn': ()=> renderNewProjectModal(),
+    'projectAddBtn': ()=> addProject()
 }
+
 
 export function setUpButtonEventListeners(){
     buttonDivs.forEach(button => {
@@ -18,28 +19,19 @@ export function setUpButtonEventListeners(){
             const action = buttonActions[e.target.id];
             if(action)
             {
-                
                 action();
-                modalCancelEventListener();
+                modalButtonEventListener();
             }
             console.log(e.target)
         })
     });
     
     document.addEventListener('click',(e)=>{
+        const action = buttonActions[e.target.id];
         if(e.target && e.target.id==="projectAddBtn")
         {
+            action();
             
-            const projectName = document.getElementById("projectName")
-            if(listOfProjects().has(projectName.value))
-            {
-                console.log("error: project exists")
-                return;
-            }
-            listOfProjects().set(projectName.value,null);
-            loadProjects();
-
-            console.log(listOfProjects());
         }
     })
 
@@ -51,4 +43,17 @@ export function setUpButtonEventListeners(){
             }
     })
     
+}
+
+function addProject(){
+    const projectName = document.getElementById("projectName")
+        if(listOfProjects().has(projectName.value))
+        {
+            console.log("error: project exists")
+            return;
+        }
+        listOfProjects().set(projectName.value,[]);
+        loadProjects();
+
+        console.log(listOfProjects());
 }
