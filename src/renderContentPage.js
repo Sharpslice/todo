@@ -1,7 +1,7 @@
 import { de } from "date-fns/locale";
 import { listOfProjects,createTodo } from "./toDoFactory";
 import loadTaskList from "./renderTaskList";
-
+import { addTask } from "./toDoFactory";
 const content = document.getElementById("content"); 
 export default function loadContent(projectName){
     content.innerHTML='';
@@ -49,9 +49,10 @@ export default function loadContent(projectName){
     console.log(listOfProjects()[0]);
     addBtn.addEventListener("click",e=>{
 
-
-
-        loadTaskList('David',createTodo("Movies","desc","tomorrow","sdadsa"));
+        let task = document.getElementById("taskInput");
+        let desc = document.getElementById("descInput")
+        addTask(projectName,createTodo(task.value,desc.value,"tomorrow","sdadsa")); 
+        loadTaskList(projectName);
     })
 
 }

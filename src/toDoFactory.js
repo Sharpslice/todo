@@ -27,6 +27,16 @@ export function listOfProjects()
 
 export function addTask(projectName,toDoTask)
 {
-    // console.log(listOfProjects().get(projectName));
+
+    const tasks = listOfProjects().get(projectName);
+
+    const titles = tasks.map(item=>item.title);
+
+    if (titles.includes(toDoTask.title)){
+        return;
+    }
+
+    console.log(tasks)
+
     listOfProjects().get(projectName).push(toDoTask);
 }

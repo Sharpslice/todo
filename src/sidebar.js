@@ -4,7 +4,7 @@ import { renderNewProjectModal } from "./renderModals";
 import loadProjects from "./renderProjectList";
 import loadContent from "./renderContentPage";
 import modalButtonEventListener from "./modalEvent";
-
+import loadTaskList from "./renderTaskList";
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
 const buttonActions ={
@@ -40,6 +40,8 @@ export function setUpButtonEventListeners(){
         if(e.target.classList.contains("button"))
             {
                 loadContent(e.target.textContent);
+                loadTaskList(e.target.textContent)
+                console.log("click project buttonn")
             }
     })
     
@@ -54,6 +56,5 @@ function addProject(){
         }
         listOfProjects().set(projectName.value,[]);
         loadProjects();
-
-        console.log(listOfProjects());
-}
+    }
+       

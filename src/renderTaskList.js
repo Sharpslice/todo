@@ -2,9 +2,9 @@ import { listOfProjects, addTask } from "./toDoFactory";
 
 
 
-export default function loadTaskList(projectName,task) {
+export default function loadTaskList(projectName) {
     
-    addTask(projectName,task);  
+     
      
    
     const taskList = document.getElementById("taskList")
@@ -23,12 +23,13 @@ export default function loadTaskList(projectName,task) {
         }
         
         
+        
         // taskList.appendChild(tasks);
 
 
     })
 
-    console.log(listOfProjects().get(projectName))
+    
    
 
 }
