@@ -14,12 +14,12 @@ export default function loadTaskList(projectName) {
         if(!list.includes(item.title))
         {
             const taskItem = document.createElement("li");
-            const taskDiv = document.createElement("div");
-            const title = document.createElement("span");
-            title.textContent=item.title;
-            taskDiv.appendChild(title);
-            taskItem.appendChild(taskDiv);
+            taskItem.classList.add("taskButton")
+            taskItem.textContent=item.title;
             taskList.appendChild(taskItem)
+            taskItem.addEventListener('click',(e)=>{
+                console.log("hey")
+            })
         }
         
         
