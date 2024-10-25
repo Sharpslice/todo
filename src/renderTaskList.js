@@ -1,12 +1,11 @@
+import loadExpanded from "./renderExpanded";
 import { listOfProjects, addTask } from "./toDoFactory";
 
 
 
 export default function loadTaskList(projectName) {
     
-     
-     
-   
+    
     const taskList = document.getElementById("taskList")
     const temp = Array.from(document.querySelectorAll("#taskList li"));
     const list = temp.map(item=>item.textContent);
@@ -18,7 +17,8 @@ export default function loadTaskList(projectName) {
             taskItem.textContent=item.title;
             taskList.appendChild(taskItem)
             taskItem.addEventListener('click',(e)=>{
-                console.log("hey")
+                
+                loadExpanded(item);
             })
         }
         
