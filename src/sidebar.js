@@ -44,12 +44,8 @@ export function setUpButtonEventListeners(){
                 console.log("click project buttonn")
             }
     })
-    const taskList = document.querySelector("#projectList");
-    taskList.addEventListener('click',e=>{
-        
-                console.log("click  buttonn")
-            
-    })
+
+ 
     
     
 }
