@@ -27,16 +27,19 @@ export function listOfProjects()
 
 export function addTask(projectName,toDoTask)
 {
+    let tasks = localStorage.getItem(projectName);
 
-    const tasks = listOfProjects().get(projectName);
-
-    const titles = tasks.map(item=>item.title);
-
-    if (titles.includes(toDoTask.title)){
-        return;
+    if(tasks){
+        tasks= JSON.parse(tasks)
     }
+    else{
+        tasks = [];
+    }
+    
 
-    console.log(tasks)
 
-    listOfProjects().get(projectName).push(toDoTask);
+    tasks.push(toDoTask);
+    localStorage.setItem(projectName,JSON.stringify(tasks));
+    // tasks.push(toDoTask)
+    
 }
