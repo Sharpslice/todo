@@ -14,6 +14,7 @@ const buttonActions ={
 
 
 export function setUpButtonEventListeners(){
+    
     buttonDivs.forEach(button => {
         button.addEventListener('click',(e)=>{
             const action = buttonActions[e.target.id];
@@ -51,13 +52,10 @@ export function setUpButtonEventListeners(){
 }
 
 function addProject(){
-    const projectName = document.getElementById("projectName")
-        if(listOfProjects().has(projectName.value))
-        {
-            console.log("error: project exists")
-            return;
-        }
-        listOfProjects().set(projectName.value,[]);
-        loadProjects();
-    }
-       
+    const projectName = document.getElementById("projectName").value;
+    localStorage.setItem(projectName,JSON.stringify([]));
+        
+
+    loadProjects();
+}
+    
