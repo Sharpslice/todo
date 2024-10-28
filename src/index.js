@@ -3,6 +3,7 @@ import './components.css';
 import './sidebar.css';
 import './content.css';
 import './expanded.css';
+import './tasks.css';
 import { setUpButtonEventListeners } from './sidebar';
 import loadProjects from './renderProjectList';
 function init()
