@@ -1,4 +1,5 @@
 import loadExpanded from "./renderExpanded";
+import loadProjects from "./renderProjectList";
 import { listOfProjects, addTask } from "./toDoFactory";
 
 
@@ -15,10 +16,24 @@ export default function loadTaskList(projectName) {
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
+
+            const taskLabel = document.createElement("label");
+            taskLabel.id = "taskLabel"
+            const taskInput =  document.createElement("input");
+            taskInput.type="checkbox";
+
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
             taskItem.textContent=task.title;
-            taskList.appendChild(taskItem)
+
+
+            taskLabel.appendChild(taskInput);
+            taskLabel.appendChild(taskItem);
+            taskList.appendChild(taskLabel);
+            
+            taskItem.addEventListener("click",(e)=>{
+                loadExpanded(task);
+            })
         }
         
         
