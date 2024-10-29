@@ -16,7 +16,7 @@ export default function loadTaskList(projectName) {
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-
+            console.log(task.priority);
             const taskLabel = document.createElement("label");
             taskLabel.id = "taskLabel"
             const taskInput =  document.createElement("input");

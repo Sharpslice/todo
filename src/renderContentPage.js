@@ -40,8 +40,11 @@ function createTaskForm(projectName){
     const addBtn = createButton("taskAddBtn","button","add");
     const cancelBtn = createButton("taskCancelBtn","button","cancel");
 
+    const dropdown = createDropDownMenu();
+
+
     form.append(task,document.createElement("br"),desc,document.createElement("br"),
-    addBtn,cancelBtn);
+    addBtn,cancelBtn,dropdown);
     formDiv.appendChild(form);
     return form;
 }
@@ -65,42 +68,45 @@ function createButton(id,type,textContent){
 function btnHandler(event){
     const projectName = document.getElementById("projectName").textContent;
     let task = document.getElementById("taskInput");
-    let desc = document.getElementById("descInput")
-    addTask(projectName,createTodo(task.value,desc.value,"tomorrow","sdadsa")); 
+    let desc = document.getElementById("descInput");
+    let priority = document.getElementById("menu").dataset.value;
+    addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority)); 
     loadTaskList(projectName);
 }
 
 function createDropDownMenu(){
     const dropdownDiv = document.createElement("div");
+    dropdownDiv.id = "dropdownContainer";
 
-    const dropdownBtn = createButton("dropdownBtn","button","Priority")
+    const dropdownBtn = document.createElement("button");
+    dropdownBtn.id="dropBtn";
+    dropdownBtn.type="button";
+    dropdownBtn.textContent="Priority";
+
+    dropdownBtn.addEventListener('click',(e)=>{
+        const menu =document.getElementById("menu");
+        toggleDropDownMenu(menu);
+        
+    })
     
     
+    const PRIORITY = ["High","Normal","Low"];
     const menu = document.createElement("ul");
     menu.id="menu";
-    const btn1 = document.createElement("li");
-    const btn2 = document.createElement("li");
-    const btn3 = document.createElement("li");
-    btn1.textContent="High";
-    btn2.textContent="Medium";
-    btn3.textContent="Low";
-
-    dropdownDiv.appendChild(dropdownBtn);
-    menu.appendChild(btn1);
-    menu.appendChild(btn2);
-    menu.appendChild(btn3);
-    dropdownDiv.appendChild(menu);
-}
-
-const dropBtn = document.querySelector("button")
-
-dropBtn.addEventListener('click',(e)=>{
-    e.preventDefault();
-    const menu =document.getElementById("menu");
-    toggleDropDownMenu(menu);
+    menu.dataset.value="Normal";
+    PRIORITY.forEach((priority) =>{
+        const btn = document.createElement("li");
+        btn.textContent=priority;
+        btn.addEventListener("click",(e)=>{
+            menu.dataset.value=priority;
+        });
+        menu.append(btn);
+    });
+   
+    dropdownDiv.append(dropdownBtn,menu);
     
-})
-
+    return dropdownDiv;
+}
 
 
 
