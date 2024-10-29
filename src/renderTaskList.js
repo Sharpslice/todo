@@ -16,21 +16,24 @@ export default function loadTaskList(projectName) {
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-            console.log(task.priority);
+            
+
+            const taskItem = document.createElement("li");
+            taskItem.classList.add("taskButton")
+            const span = document.createElement("span");
+            span.textContent=task.title;
+
             const taskLabel = document.createElement("label");
             taskLabel.id = "taskLabel"
             const taskInput =  document.createElement("input");
             taskInput.type="checkbox";
 
-            const taskItem = document.createElement("li");
-            taskItem.classList.add("taskButton")
-            taskItem.textContent=task.title;
 
-
-            taskLabel.appendChild(taskInput);
-            taskLabel.appendChild(taskItem);
-            taskList.appendChild(taskLabel);
+            taskLabel.append(taskInput);
             
+            taskItem.append(taskLabel);
+            taskItem.append(span);
+            taskList.append(taskItem);
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
             })
