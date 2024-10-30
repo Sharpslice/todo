@@ -11,10 +11,16 @@ export default function loadContent(projectName){
     const projectHeader = createHeader(projectName);
     const form = createTaskForm(projectName);
     const ul = createTaskListUl();
+    const divider = document.createElement("span");
+    divider.textContent="IN PROGRESS";
+    const divider2 = document.createElement("span");
+    divider2.textContent="COMPLETED";
 
     content.appendChild(projectHeader);
     content.appendChild(form);
+    content.appendChild(divider);
     content.appendChild(ul);
+    content.appendChild(divider2);
  
 }
 function createHeader(projectName){
@@ -98,6 +104,7 @@ function createDropDownMenu(){
         const btn = document.createElement("li");
         btn.textContent=priority;
         btn.addEventListener("click",(e)=>{
+            console.log("changed priority to " + priority)
             menu.dataset.value=priority;
         });
         menu.append(btn);

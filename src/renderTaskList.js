@@ -17,9 +17,11 @@ export default function loadTaskList(projectName) {
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
             
-
+                
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
+            taskItem.setAttribute("data-status","in-progress");
+            taskItem.setAttribute("data-priority",task.priority);
             const span = document.createElement("span");
             span.textContent=task.title;
 
