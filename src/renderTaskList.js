@@ -8,6 +8,7 @@ export default function loadTaskList(projectName) {
     
     
     const taskList = document.getElementById("taskList")
+    const completedtaskList = document.getElementById("completedTaskList")
     const temp = Array.from(document.querySelectorAll("#taskList li"));
     const list = temp.map(item=>item.textContent);
    
@@ -16,12 +17,10 @@ export default function loadTaskList(projectName) {
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-            
-                
+            console.log("adding: "+task.title)
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
-            taskItem.setAttribute("data-status","in-progress");
-            taskItem.setAttribute("data-priority",task.priority);
+          
             const span = document.createElement("span");
             span.textContent=task.title;
 
@@ -29,20 +28,45 @@ export default function loadTaskList(projectName) {
             taskLabel.id = "taskLabel"
             const taskInput =  document.createElement("input");
             taskInput.type="checkbox";
+            taskInput.checked=task.isCompleted;
 
+            taskInput.addEventListener("click",(e)=>
+                {
+                    if(task.isCompleted){
+                        task.isCompleted = false;
+                        taskList.append(taskItem);
+                    }
+                    else{
+                        task.isCompleted = true;
+                        completedtaskList.append(taskItem)
+                    }
+                    let updatedTasks = tasks.map(t => t.title === task.title ? task: t);
+                    localStorage.setItem(projectName,JSON.stringify(updatedTasks));
+                    console.log(updatedTasks)
+                    
+
+                    
+                });
 
             taskLabel.append(taskInput);
             
             taskItem.append(taskLabel);
             taskItem.append(span);
-            taskList.append(taskItem);
+            if(task.isCompleted)
+            {
+                completedtaskList.append(taskItem);
+            }
+            else{
+                taskList.append(taskItem);
+            }
+            
+            
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
             })
         }
-        
-        
     });
+
 
    
 

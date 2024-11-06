@@ -10,17 +10,20 @@ export default function loadContent(projectName){
 
     const projectHeader = createHeader(projectName);
     const form = createTaskForm(projectName);
-    const ul = createTaskListUl();
+    const ul = createTaskListUl("taskList");
     const divider = document.createElement("span");
     divider.textContent="IN PROGRESS";
     const divider2 = document.createElement("span");
     divider2.textContent="COMPLETED";
+    const completedUl = createTaskListUl("completedTaskList");
+
 
     content.appendChild(projectHeader);
     content.appendChild(form);
     content.appendChild(divider);
     content.appendChild(ul);
     content.appendChild(divider2);
+    content.appendChild(completedUl);
  
 }
 function createHeader(projectName){
@@ -30,9 +33,9 @@ function createHeader(projectName){
     return project;
 }
 
-function createTaskListUl(){
+function createTaskListUl(id){
     const ul = document.createElement("ul");
-    ul.id = "taskList";
+    ul.id = id;
     return ul;
 }
 
@@ -76,7 +79,8 @@ function btnHandler(event){
     let task = document.getElementById("taskInput");
     let desc = document.getElementById("descInput");
     let priority = document.getElementById("menu").dataset.value;
-    addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority)); 
+ 
+    addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority,false)); 
     loadTaskList(projectName);
 }
 
