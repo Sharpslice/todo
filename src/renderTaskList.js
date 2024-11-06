@@ -37,7 +37,17 @@ export default function loadTaskList(projectName) {
             
             taskItem.append(taskLabel);
             taskItem.append(span);
-        
+            
+            if(task.isCompleted){
+                completedtaskList.append(taskItem)
+            }
+            else{
+                taskList.append(taskItem)
+            }
+
+
+
+
             taskInput.addEventListener("click",(e)=>
                 {
                    
@@ -47,7 +57,7 @@ export default function loadTaskList(projectName) {
                     }
                     else{
                         task.isCompleted = true;
-                        completedtaskList.append(taskItem)
+                       completedtaskList.append(taskItem)
                     }
                     const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
                     localStorage.setItem(projectName,JSON.stringify(updatedTasks));
@@ -55,15 +65,8 @@ export default function loadTaskList(projectName) {
                 
                     list = getExistingTaskTitles();
                 });
-                if(task.isCompleted){
-                    task.isCompleted = false;
-                    taskList.append(taskItem);
-                }
-                else{
-                    task.isCompleted = true;
-                    completedtaskList.append(taskItem)
-                }
             
+             
            
             
             
