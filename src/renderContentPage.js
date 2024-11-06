@@ -79,9 +79,20 @@ function btnHandler(event){
     let task = document.getElementById("taskInput");
     let desc = document.getElementById("descInput");
     let priority = document.getElementById("menu").dataset.value;
- 
-    addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority,false)); 
-    loadTaskList(projectName);
+    
+    let tmp = JSON.parse(localStorage.getItem(projectName));
+    const isDuplicate = tmp.some(title => title.title === task.value)
+   
+    if(isDuplicate){
+        console.log("duplicate!");
+    }
+    else{
+        addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority,false)); 
+        loadTaskList(projectName);
+        console.log("not duplicate");
+    }
+    
+    
 }
 
 function createDropDownMenu(){

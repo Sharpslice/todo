@@ -6,10 +6,9 @@ import { listOfProjects, addTask } from "./toDoFactory";
 
 export default function loadTaskList(projectName) {
     
-    
     const taskList = document.getElementById("taskList")
     const completedtaskList = document.getElementById("completedTaskList")
-    const temp = Array.from(document.querySelectorAll("#taskList li"));
+    const temp = Array.from(document.querySelectorAll("#taskList li")).concat(document.querySelectorAll("#completedTaskList li"));
     const list = temp.map(item=>item.textContent);
    
     let tasks = localStorage.getItem(projectName);
@@ -17,21 +16,21 @@ export default function loadTaskList(projectName) {
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-            console.log("adding: "+task.title)
+          
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
           
             const span = document.createElement("span");
             span.textContent=task.title;
-
             const taskLabel = document.createElement("label");
             taskLabel.id = "taskLabel"
             const taskInput =  document.createElement("input");
             taskInput.type="checkbox";
             taskInput.checked=task.isCompleted;
-
+            let gate = true
             taskInput.addEventListener("click",(e)=>
                 {
+                    gate=false
                     if(task.isCompleted){
                         task.isCompleted = false;
                         taskList.append(taskItem);
@@ -40,7 +39,7 @@ export default function loadTaskList(projectName) {
                         task.isCompleted = true;
                         completedtaskList.append(taskItem)
                     }
-                    let updatedTasks = tasks.map(t => t.title === task.title ? task: t);
+                    const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
                     localStorage.setItem(projectName,JSON.stringify(updatedTasks));
                     console.log(updatedTasks)
                     
@@ -52,13 +51,17 @@ export default function loadTaskList(projectName) {
             
             taskItem.append(taskLabel);
             taskItem.append(span);
-            if(task.isCompleted)
-            {
-                completedtaskList.append(taskItem);
-            }
-            else{
-                taskList.append(taskItem);
-            }
+            if(gate)
+                {
+                    if(task.isCompleted)
+                        {
+                            completedtaskList.append(taskItem);
+                        }
+                        else{
+                            taskList.append(taskItem);
+                        }
+                        
+                }
             
             
             taskItem.addEventListener("click",(e)=>{
