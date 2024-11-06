@@ -8,9 +8,15 @@ export default function loadTaskList(projectName) {
     
     const taskList = document.getElementById("taskList")
     const completedtaskList = document.getElementById("completedTaskList")
-    const temp = Array.from(document.querySelectorAll("#taskList li")).concat(document.querySelectorAll("#completedTaskList li"));
-    const list = temp.map(item=>item.textContent);
-   
+    const taskNames = document.querySelectorAll("#taskList li span");
+    function getExistingTaskTitles() {
+        const taskNames = document.querySelectorAll("#taskList li span, #completedTaskList li span");
+        return Array.from(taskNames).map(span => span.textContent.trim());
+    }
+
+    let list = getExistingTaskTitles();
+    console.log(list);
+
     let tasks = localStorage.getItem(projectName);
     tasks = JSON.parse(tasks);
 
@@ -19,7 +25,6 @@ export default function loadTaskList(projectName) {
           
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
-          
             const span = document.createElement("span");
             span.textContent=task.title;
             const taskLabel = document.createElement("label");
@@ -27,10 +32,15 @@ export default function loadTaskList(projectName) {
             const taskInput =  document.createElement("input");
             taskInput.type="checkbox";
             taskInput.checked=task.isCompleted;
-            let gate = true
+
+            taskLabel.append(taskInput);
+            
+            taskItem.append(taskLabel);
+            taskItem.append(span);
+        
             taskInput.addEventListener("click",(e)=>
                 {
-                    gate=false
+                   
                     if(task.isCompleted){
                         task.isCompleted = false;
                         taskList.append(taskItem);
@@ -42,38 +52,24 @@ export default function loadTaskList(projectName) {
                     const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
                     localStorage.setItem(projectName,JSON.stringify(updatedTasks));
                     console.log(updatedTasks)
-                    
-
-                    
+                
+                    list = getExistingTaskTitles();
                 });
-
-            taskLabel.append(taskInput);
-            
-            taskItem.append(taskLabel);
-            taskItem.append(span);
-            if(gate)
-                {
-                    if(task.isCompleted)
-                        {
-                            completedtaskList.append(taskItem);
-                        }
-                        else{
-                            taskList.append(taskItem);
-                        }
-                        
+                if(task.isCompleted){
+                    task.isCompleted = false;
+                    taskList.append(taskItem);
                 }
+                else{
+                    task.isCompleted = true;
+                    completedtaskList.append(taskItem)
+                }
+            
+           
             
             
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
             })
         }
-    });
-
-
-   
-
-    
-   
-
+});
 }
