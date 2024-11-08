@@ -1,0 +1,19 @@
+#taskList > li{
+    list-style: none;
+    
+}
+.taskButton{
+    display: flex;
+    
+}
+.taskButton:hover{
+    background-color: #d3d3d3; 
+    
+ }
+.taskButton > span{
+    padding-left: 10px;
+}
+
+[data-priority="Low"]{
+    
+}

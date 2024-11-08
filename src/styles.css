@@ -1,0 +1,44 @@
+@font-face{
+    font-family: 'MyCustomFont';
+    src:url('fonts/Flame-Regular.ttf');
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'MyCustomFont',sans-serif;
+}
+
+#container{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 25% 35% 35%;
+    
+}
+
+#sideBar{
+    grid-column: 1/2;
+    height: 100%;
+    
+}
+#tasks{
+    
+    
+}
+
+#projects{
+
+}
+
+
+#content{
+    grid-column: 2/3;
+}
+#expanded{
+   grid-column: 3/4;
+}

@@ -1,0 +1,8 @@
+#expanded{
+    display: flex;
+    flex-direction: column;
+    
+}
+#expandedTextField{
+   padding: 10px;
+}

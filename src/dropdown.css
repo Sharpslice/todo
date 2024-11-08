@@ -1,0 +1,28 @@
+
+#dropBtn{
+    font-size: 15px;
+    padding: 6x;
+    
+}
+#menu{
+    max-height: 0;
+    overflow: hidden;
+    list-style-type: none;
+    
+}
+#menu > li>button{
+    font-size: 20px;
+    width: 100%
+}
+
+#menu.active{
+    max-height: 100px;
+}
+#dropdownContainer > button{
+    border: none;
+    cursor: pointer;
+}
+#menu > li:hover{
+    background-color: red;
+    color: white;
+}
