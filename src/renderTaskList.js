@@ -6,42 +6,72 @@ import { listOfProjects, addTask } from "./toDoFactory";
 
 export default function loadTaskList(projectName) {
     
-    
     const taskList = document.getElementById("taskList")
-    const temp = Array.from(document.querySelectorAll("#taskList li"));
-    const list = temp.map(item=>item.textContent);
-   
+    const completedtaskList = document.getElementById("completedTaskList")
+    const taskNames = document.querySelectorAll("#taskList li span");
+    function getExistingTaskTitles() {
+        const taskNames = document.querySelectorAll("#taskList li span, #completedTaskList li span");
+        return Array.from(taskNames).map(span => span.textContent.trim());
+    }
+
+    let list = getExistingTaskTitles();
+    console.log(list);
+
     let tasks = localStorage.getItem(projectName);
     tasks = JSON.parse(tasks);
 
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-
+          
+            const taskItem = document.createElement("li");
+            taskItem.classList.add("taskButton")
+            taskItem.setAttribute("data-priority",task.priority);
+            const span = document.createElement("span");
+            span.textContent=task.title;
             const taskLabel = document.createElement("label");
             taskLabel.id = "taskLabel"
             const taskInput =  document.createElement("input");
             taskInput.type="checkbox";
+            taskInput.checked=task.isCompleted;
 
-            const taskItem = document.createElement("li");
-            taskItem.classList.add("taskButton")
-            taskItem.textContent=task.title;
+            taskLabel.append(taskInput);
+            
+            taskItem.append(taskLabel);
+            taskItem.append(span);
+            
+            if(task.isCompleted){
+                completedtaskList.append(taskItem)
+            }
+            else{
+                taskList.append(taskItem)
+            }
 
-
-            taskLabel.appendChild(taskInput);
-            taskLabel.appendChild(taskItem);
-            taskList.appendChild(taskLabel);
+            taskInput.addEventListener("click",(e)=>
+                {
+                   
+                    if(task.isCompleted){
+                        task.isCompleted = false;
+                        taskList.append(taskItem);
+                    }
+                    else{
+                        task.isCompleted = true;
+                       completedtaskList.append(taskItem)
+                    }
+                    const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
+                    localStorage.setItem(projectName,JSON.stringify(updatedTasks));
+                    console.log(updatedTasks)
+                
+                    list = getExistingTaskTitles();
+                });
+            
+             
+           
+            
             
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
+                console.log(task.priority)
             })
         }
-        
-        
-    });
-
-   
-
-    
-   
-
+});
 }
