@@ -7,34 +7,17 @@ import modalButtonEventListener from "./modalEvent";
 import loadTaskList from "./renderTaskList";
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
-const buttonActions ={
-    'newProjectBtn': ()=> renderNewProjectModal(),
-    'projectAddBtn': ()=> addProject()
-}
 
 
 export function setUpButtonEventListeners(){
     
-    buttonDivs.forEach(button => {
-        button.addEventListener('click',(e)=>{
-            const action = buttonActions[e.target.id];
-            if(action)
-            {
-                action();
-                modalButtonEventListener();
-            }
-            console.log(e.target)
-        })
+    
+    const openAddProjectModal = document.getElementById("newProjectBtn");
+    openAddProjectModal.addEventListener("click",(e)=>{
+        renderNewProjectModal();
     });
     
-    document.addEventListener('click',(e)=>{
-        const action = buttonActions[e.target.id];
-        if(e.target && e.target.id==="projectAddBtn")
-        {
-            action();
-            
-        }
-    })
+    
 
     const projectList = document.querySelector("#projectList");
     projectList.addEventListener('click',e=>{
@@ -42,20 +25,12 @@ export function setUpButtonEventListeners(){
             {
                 loadContent(e.target.textContent);
                 loadTaskList(e.target.textContent)
-                console.log("click project buttonn")
+               
             }
     })
 
  
-    
-    
 }
 
-function addProject(){
-    const projectName = document.getElementById("projectName").value;
-    localStorage.setItem(projectName,JSON.stringify([]));
-        
 
-    loadProjects();
-}
     

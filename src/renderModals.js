@@ -1,11 +1,12 @@
 
+import loadProjects from "./renderProjectList";
+
 const body= document.querySelector("#container")
 
 export function renderNewProjectModal(){
     const modal = document.createElement("div");
     modal.classList.add("projectModal", "hidden");
     
-
     const form = document.createElement("form");
     form.id="projectForm";
     const projectNameLabel = document.createElement("label");
@@ -28,6 +29,9 @@ export function renderNewProjectModal(){
     cancelBtn.id = "modalCancelBtn";
     cancelBtn.textContent="cancel";
 
+
+    
+
     
     form.append(projectNameLabel);
     form.append(document.createElement('br'))
@@ -40,5 +44,19 @@ export function renderNewProjectModal(){
     body.appendChild(modal);
 
 
+    addBtn.addEventListener('click',e=>{
+        addProject();
+    })
+
+    cancelBtn.addEventListener("click",e=>{
+        modal.remove();
+    })
+
     
+}
+
+function addProject(){
+    const projectName = document.getElementById("projectName").value;
+    localStorage.setItem(projectName,JSON.stringify([]));
+    loadProjects();
 }
