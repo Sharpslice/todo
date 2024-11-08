@@ -7,7 +7,7 @@ const PRIORITY = Object.freeze({
 });
 
 
-export function createTodo(title,desc,dueDate,priority,isCompleted)
+export function createTodo(title,desc,dueDate = null,priority,isCompleted)
 {
     return{
         title,

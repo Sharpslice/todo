@@ -2,8 +2,9 @@ import { de } from "date-fns/locale";
 import { listOfProjects,createTodo } from "./toDoFactory";
 import loadTaskList from "./renderTaskList";
 import { addTask } from "./toDoFactory";
-
-
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import { parse } from "date-fns";
 const content = document.getElementById("content"); 
 export default function loadContent(projectName){
     content.innerHTML='';
@@ -46,13 +47,22 @@ function createTaskForm(projectName){
 
     const task = createInput("text","taskInput","Enter Task");
     const desc = createInput("text","descInput","Enter Desc");
+
+    const calendar = document.createElement("input");
+    calendar.id = "dateInput";
+    flatpickr(calendar,{
+        dateFormat: "m-d-Y",
+        
+    });
+    
+
     const addBtn = createButton("taskAddBtn","button","add");
     const cancelBtn = createButton("taskCancelBtn","button","cancel");
 
     const dropdown = createDropDownMenu();
 
 
-    form.append(task,document.createElement("br"),desc,document.createElement("br"),
+    form.append(task,document.createElement("br"),desc,document.createElement("br"),calendar,
     addBtn,cancelBtn,dropdown);
     formDiv.appendChild(form);
     return form;
@@ -63,6 +73,7 @@ function createInput(type,id,placeholder){
     taskInput.type=type;
     taskInput.id = id;
     taskInput.placeholder=placeholder;
+    taskInput.required=true;
     return taskInput
 }
 function createButton(id,type,textContent){
@@ -83,19 +94,25 @@ function btnHandler(event){
     let tmp = JSON.parse(localStorage.getItem(projectName));
     const isDuplicate = tmp.some(title => title.title === task.value)
    
-    if(isDuplicate){
-        console.log("duplicate!");
+    let form = document.getElementById("createTaskForm");
+    if(form.reportValidity()){
+        if(isDuplicate){
+            console.log("duplicate!");
+        }
+        else{
+            let date = convertToDateObj(document.getElementById("dateInput").value)
+            addTask(projectName,createTodo(task.value,desc.value,date,priority,false)); 
+            loadTaskList(projectName);
+            console.log("not duplicate");
+            
+            
+        }
     }
-    else{
-        addTask(projectName,createTodo(task.value,desc.value,"tomorrow",priority,false)); 
-        loadTaskList(projectName);
-        console.log("not duplicate");
-    }
-    
-    
-    
 }
-
+function convertToDateObj(dateStr){
+    let parsedDate = parse(dateStr,"MM-dd-yyyy",new Date());
+    return parsedDate;
+}
 function createDropDownMenu(){
     const dropdownDiv = document.createElement("div");
     dropdownDiv.id = "dropdownContainer";

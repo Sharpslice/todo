@@ -13,3 +13,7 @@
 .taskButton > span{
     padding-left: 10px;
 }
+
+[data-priority="Low"]{
+    
+}

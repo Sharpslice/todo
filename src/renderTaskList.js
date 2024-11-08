@@ -25,6 +25,7 @@ export default function loadTaskList(projectName) {
           
             const taskItem = document.createElement("li");
             taskItem.classList.add("taskButton")
+            taskItem.setAttribute("data-priority",task.priority);
             const span = document.createElement("span");
             span.textContent=task.title;
             const taskLabel = document.createElement("label");
@@ -44,9 +45,6 @@ export default function loadTaskList(projectName) {
             else{
                 taskList.append(taskItem)
             }
-
-
-
 
             taskInput.addEventListener("click",(e)=>
                 {
@@ -72,6 +70,7 @@ export default function loadTaskList(projectName) {
             
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
+                console.log(task.priority)
             })
         }
 });
