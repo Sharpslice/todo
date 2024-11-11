@@ -5,17 +5,23 @@ import loadProjects from "./renderProjectList";
 import loadContent from "./renderContentPage";
 import modalButtonEventListener from "./modalEvent";
 import loadTaskList from "./renderTaskList";
+import { el } from "date-fns/locale";
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
 
 
 export function setUpButtonEventListeners(){
     
-    
+    let isActive =false;
     const openAddProjectModal = document.getElementById("newProjectBtn");
     openAddProjectModal.addEventListener("click",(e)=>{
         renderNewProjectModal();
     });
+
+    const deleteProjectBtn = document.getElementById("deleteProjectBtn");
+    deleteProjectBtn.addEventListener("click",e=>{
+        isActive = !isActive;
+    })
     
     
 
@@ -23,8 +29,16 @@ export function setUpButtonEventListeners(){
     projectList.addEventListener('click',e=>{
         if(e.target.classList.contains("button"))
             {
-                loadContent(e.target.textContent);
-                loadTaskList(e.target.textContent)
+                if(isActive){
+                    localStorage.removeItem(e.target.textContent);
+                    loadProjects();
+                    console.log("deleting: "+e.target.textContent);
+                }
+                else{
+                    loadContent(e.target.textContent);
+                    loadTaskList(e.target.textContent)
+                }
+                
                
             }
     })

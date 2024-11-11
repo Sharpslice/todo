@@ -58,5 +58,6 @@ export function renderNewProjectModal(){
 function addProject(){
     const projectName = document.getElementById("projectName").value;
     localStorage.setItem(projectName,JSON.stringify([]));
+    console.log("attempting to add: "+projectName)
     loadProjects();
 }
