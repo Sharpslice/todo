@@ -8,9 +8,14 @@ import { parse } from "date-fns";
 const content = document.getElementById("content"); 
 export default function loadContent(projectName){
     content.innerHTML='';
-
     const projectHeader = createHeader(projectName);
+    
+
+    
     const form = createTaskForm(projectName);
+    
+    
+    
     const ul = createTaskListUl("taskList");
     const divider = document.createElement("span");
     divider.textContent="IN PROGRESS";
@@ -20,12 +25,17 @@ export default function loadContent(projectName){
 
 
     content.appendChild(projectHeader);
+    content.appendChild(document.createElement("br"))
     content.appendChild(form);
+    
+    
     content.appendChild(divider);
     content.appendChild(ul);
     content.appendChild(divider2);
     content.appendChild(completedUl);
- 
+    if(projectName =="Today"){
+      content.removeChild(form);  
+    } 
 }
 function createHeader(projectName){
     const project = document.createElement("span");

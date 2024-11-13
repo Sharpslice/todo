@@ -12,6 +12,13 @@ const buttonDivs = sidebar.querySelectorAll(".button");
 
 export function setUpButtonEventListeners(){
     
+    const todayView = document.getElementById("today");
+    todayView.addEventListener("click",e=>{
+        loadContent("Today");
+    })
+
+
+
     let isActive =false;
     const openAddProjectModal = document.getElementById("newProjectBtn");
     openAddProjectModal.addEventListener("click",(e)=>{
