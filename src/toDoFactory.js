@@ -8,7 +8,8 @@ const PRIORITY = Object.freeze({
 
 
 export function createTodo(title,desc,dueDate = null,priority,isCompleted)
-{
+{   
+    console.log(typeof dueDate)
     return{
         title,
         desc,
