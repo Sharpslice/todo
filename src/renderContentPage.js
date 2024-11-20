@@ -100,7 +100,11 @@ function btnHandler(event){
             console.log("duplicate!");
         }
         else{
+            console.log("dateInput: "+ document.getElementById("dateInput").value)
+            
             let date = convertToDateObj(document.getElementById("dateInput").value)
+            console.log("parsed date: " +date);
+            console.log(typeof date)
             addTask(projectName,createTodo(task.value,desc.value,date,priority,false)); 
             loadTaskList(projectName);
             console.log("not duplicate");
@@ -111,6 +115,7 @@ function btnHandler(event){
 }
 function convertToDateObj(dateStr){
     let parsedDate = parse(dateStr,"MM-dd-yyyy",new Date());
+    parsedDate.setHours(0,0,0,0);
     return parsedDate;
 }
 function createDropDownMenu(){
