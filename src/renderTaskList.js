@@ -1,27 +1,44 @@
 import loadExpanded from "./renderExpanded";
 import loadProjects from "./renderProjectList";
 import { listOfProjects, addTask } from "./toDoFactory";
-import { isDate ,isToday} from "date-fns";
+import { addDays,isSameDay} from "date-fns";
 
 
-export default function loadTaskList(projectName) {
+export default function loadTaskList(projectName =null, filter ={}) {
+    let list = [];
+    let tasks =[];
     
-    let list = getExistingTaskTitles();
-    
-    let tasks = localStorage.getItem(projectName);
-    tasks = JSON.parse(tasks);
-
+    if(projectName)
+    {
+        list = getExistingTaskTitles();
+        tasks = localStorage.getItem(projectName);
+        tasks = JSON.parse(tasks);
+        
+    }
+    else
+    {   
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+        console.log(tasks)
+        
+    }
+    console.log(tasks);
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-            let date = convertStrToDate(task.dueDate);
-            if(isToday(date)){
-                const {taskItem,taskInput} = createTaskTile(task);
+             
+            renderTasks(task,tasks,projectName,list)
+                
+                
+        }
+});
+}
 
-
-
-
+function renderTasks(task,tasks,projectName,list){
+    const {taskItem,taskInput} = createTaskTile(task);
             moveTasks(task,taskItem);
-            
+                    
             taskInput.addEventListener("click",(e)=>
                 {
                     moveTasks(task,taskItem);
@@ -31,18 +48,8 @@ export default function loadTaskList(projectName) {
             taskItem.addEventListener("click",(e)=>{
                 loadExpanded(task);
             })
-            }
-            else{
-                console.log("false");
-            }
-            
-        }
-});
 }
-function convertStrToDate(dateStr)
-{
-    return new Date(dateStr)
-}
+
 function moveTasks(task,taskItem){
     const taskList = document.getElementById("taskList")
     const completedtaskList = document.getElementById("completedTaskList")
@@ -69,7 +76,15 @@ function moveTasks(task,taskItem){
 
 function updateLocalStorage(tasks,task,projectName,list){
     const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
-    localStorage.setItem(projectName,JSON.stringify(updatedTasks));
+
+    if(projectName == null)
+    {
+        localStorage.setItem(task.projectName,JSON.stringify(updatedTasks));
+    }
+    else{
+        localStorage.setItem(projectName,JSON.stringify(updatedTasks));
+    }
+    
     console.log(updatedTasks)
 
     list = getExistingTaskTitles();
