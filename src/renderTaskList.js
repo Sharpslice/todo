@@ -27,8 +27,25 @@ export default function loadTaskList(projectName =null, filter ={}) {
     console.log(tasks);
     tasks.forEach(task =>{
         if(!list.includes(task.title)){
-             
-            renderTasks(task,tasks,projectName,list)
+            if(isSameDay(filter.today,task.dueDate))
+            {
+                renderTasks(task,tasks,projectName,list)
+                console.log("filter: today")
+                
+            }
+            else if(filter.all)
+            {
+                renderTasks(task,tasks,projectName,list)
+                console.log("filter: all")
+                
+            }
+            else if (Object.keys(filter).length==0)
+            {
+                renderTasks(task,tasks,projectName,list)
+                console.log("filter: none")
+            }
+            
+            
                 
                 
         }

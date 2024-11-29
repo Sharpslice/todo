@@ -18,7 +18,13 @@ export function setUpButtonEventListeners(){
     const todayView = document.getElementById("today");
     todayView.addEventListener("click",e=>{
         loadContent("today")
-        loadTaskList(null,{today : true})
+        loadTaskList(null,{today : startOfToday()})
+    })
+
+    const allView = document.getElementById("allTasks");
+    allView.addEventListener("click",e=>{
+        loadContent("All")
+        loadTaskList(null, {all:true});
     })
 
 
