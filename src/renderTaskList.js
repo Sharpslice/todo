@@ -5,66 +5,50 @@ import { addDays,isSameDay} from "date-fns";
 
 
 export default function loadTaskList(projectName =null, filter ={}) {
-    let list = [];
+
     let tasks =[];
-    
+    //this is where it should filter
     if(projectName)
     {
-        list = getExistingTaskTitles();
         tasks = localStorage.getItem(projectName);
-        tasks = JSON.parse(tasks);
-        
+        tasks = JSON.parse(tasks);   
     }
-    else
+    else if (filter.today)
     {   
         const keys = Object.keys(localStorage);
         tasks = keys.map((key)=>{
            return JSON.parse(localStorage.getItem(key));
         }).flat();
-        console.log(tasks)
+        tasks = tasks.filter(task=>isSameDay(task.dueDate,filter.today))
         
     }
-    console.log(tasks);
+    else if(filter.all)
+    {
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+    }
+    
     tasks.forEach(task =>{
-        if(!list.includes(task.title)){
-            if(isSameDay(filter.today,task.dueDate))
-            {
-                renderTasks(task,tasks,projectName,list)
-                console.log("filter: today")
-                
-            }
-            else if(filter.all)
-            {
-                renderTasks(task,tasks,projectName,list)
-                console.log("filter: all")
-                
-            }
-            else if (Object.keys(filter).length==0)
-            {
-                renderTasks(task,tasks,projectName,list)
-                console.log("filter: none")
-            }
-            
-            
-                
-                
-        }
+        
+        renderTasks(task,tasks,projectName)
 });
 }
 
-function renderTasks(task,tasks,projectName,list){
+function renderTasks(task,tasks,projectName){
     const {taskItem,taskInput} = createTaskTile(task);
+    moveTasks(task,taskItem);
+            
+    taskInput.addEventListener("click",(e)=>
+        {
             moveTasks(task,taskItem);
-                    
-            taskInput.addEventListener("click",(e)=>
-                {
-                    moveTasks(task,taskItem);
-                    updateLocalStorage(tasks,task,projectName,list);
-                });
+            updateLocalStorage(tasks,task,projectName);
+        });
 
-            taskItem.addEventListener("click",(e)=>{
-                loadExpanded(task);
-            })
+    taskItem.addEventListener("click",(e)=>{
+        loadExpanded(task);
+    })
 }
 
 function moveTasks(task,taskItem){
@@ -91,26 +75,13 @@ function moveTasks(task,taskItem){
     }
 }
 
-function updateLocalStorage(tasks,task,projectName,list){
-    const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
-
-    if(projectName == null)
-    {
-        localStorage.setItem(task.projectName,JSON.stringify(updatedTasks));
-    }
-    else{
-        localStorage.setItem(projectName,JSON.stringify(updatedTasks));
-    }
+function updateLocalStorage(tasks,task){
     
-    console.log(updatedTasks)
+    
 
-    list = getExistingTaskTitles();
 }
 
-function getExistingTaskTitles() {
-    const taskNames = document.querySelectorAll("#taskList li span, #completedTaskList li span");
-    return Array.from(taskNames).map(span => span.textContent.trim());
-}
+
 
 function createTaskTile(task){
     const taskItem = document.createElement("li");
