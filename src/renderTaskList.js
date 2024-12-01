@@ -11,7 +11,8 @@ export default function loadTaskList(projectName =null, filter ={}) {
     if(projectName)
     {
         tasks = localStorage.getItem(projectName);
-        tasks = JSON.parse(tasks);   
+        tasks = JSON.parse(tasks);  
+        console.log(tasks);
     }
     else if (filter.today)
     {   
@@ -20,7 +21,7 @@ export default function loadTaskList(projectName =null, filter ={}) {
            return JSON.parse(localStorage.getItem(key));
         }).flat();
         tasks = tasks.filter(task=>isSameDay(task.dueDate,filter.today))
-        
+        console.log(tasks);
     }
     else if(filter.all)
     {
@@ -28,22 +29,24 @@ export default function loadTaskList(projectName =null, filter ={}) {
         tasks = keys.map((key)=>{
            return JSON.parse(localStorage.getItem(key));
         }).flat();
+        console.log(tasks);
     }
     
-    tasks.forEach(task =>{
+    tasks.forEach((task,index) =>{
         
-        renderTasks(task,tasks,projectName)
+        renderTasks(task,tasks,index)
 });
 }
 
-function renderTasks(task,tasks,projectName){
+function renderTasks(task,tasks,index){
     const {taskItem,taskInput} = createTaskTile(task);
     moveTasks(task,taskItem);
             
     taskInput.addEventListener("click",(e)=>
         {
+            console.log(index)
             moveTasks(task,taskItem);
-            updateLocalStorage(tasks,task,projectName);
+            updateLocalStorage(tasks,task,index);
         });
 
     taskItem.addEventListener("click",(e)=>{
@@ -75,10 +78,21 @@ function moveTasks(task,taskItem){
     }
 }
 
-function updateLocalStorage(tasks,task){
-    
-    
+function updateLocalStorage(tasks,task,index){
+    const taskListByProject = tasks.reduce((acc, task) => {
+        if (!acc[task.projectName]) {
+            acc[task.projectName] = [];
+        }
+        acc[task.projectName].push(task); // Group tasks by project name
+        return acc;
+    }, {});
 
+    // Store the tasks for each project in localStorage
+    Object.keys(taskListByProject).forEach(projectName => {
+        localStorage.setItem(projectName, JSON.stringify(taskListByProject[projectName]));
+    });
+
+    
 }
 
 
