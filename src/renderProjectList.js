@@ -9,10 +9,10 @@ export default function loadProjects(){
         const projectItem = document.createElement('li');
         const temp = Array.from(document.querySelectorAll("#projectList li"));
         const list = temp.map(item=>item.textContent);
-        console.log("list: "+list)
+        
         if(!list.includes(key))
         {
-            console.log("loading projects: "+key)
+           
             projectItem.classList.add("button");
             projectItem.textContent = key;
             projects.appendChild(projectItem);

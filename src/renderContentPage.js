@@ -10,8 +10,6 @@ export default function loadContent(projectName){
     content.innerHTML='';
     const projectHeader = createHeader(projectName);
     
-
-    
     const form = createTaskForm(projectName);
     
     
@@ -33,9 +31,7 @@ export default function loadContent(projectName){
     content.appendChild(ul);
     content.appendChild(divider2);
     content.appendChild(completedUl);
-    if(projectName =="Today"){
-      content.removeChild(form);  
-    } 
+    
 }
 function createHeader(projectName){
     const project = document.createElement("span");
@@ -115,7 +111,7 @@ function btnHandler(event){
             let date = convertToDateObj(document.getElementById("dateInput").value)
             console.log("parsed date: " +date);
             console.log(typeof date)
-            addTask(projectName,createTodo(task.value,desc.value,date,priority,false)); 
+            addTask(projectName,createTodo(projectName,task.value,desc.value,date,priority,false)); 
             loadTaskList(projectName);
             console.log("not duplicate");
             

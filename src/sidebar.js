@@ -5,16 +5,33 @@ import loadProjects from "./renderProjectList";
 import loadContent from "./renderContentPage";
 import modalButtonEventListener from "./modalEvent";
 import loadTaskList from "./renderTaskList";
-import { el } from "date-fns/locale";
+import { startOfToday } from "date-fns";
 const sidebar = document.querySelector('#sideBar');
 const buttonDivs = sidebar.querySelectorAll(".button");
 
 
 export function setUpButtonEventListeners(){
     
+
+
+
     const todayView = document.getElementById("today");
     todayView.addEventListener("click",e=>{
-        loadContent("Today");
+        loadContent("today")
+        loadTaskList(null,{today : startOfToday()})
+    })
+
+    const next7 = document.getElementById("next7");
+    next7.addEventListener("click",e=>{
+        loadContent("next 7 days");
+        loadTaskList(null,{next7: true});
+    })
+
+
+    const allView = document.getElementById("allTasks");
+    allView.addEventListener("click",e=>{
+        loadContent("All")
+        loadTaskList(null, {all:true});
     })
 
 
@@ -43,7 +60,7 @@ export function setUpButtonEventListeners(){
                 }
                 else{
                     loadContent(e.target.textContent);
-                    loadTaskList(e.target.textContent)
+                    loadTaskList(e.target.textContent);
                 }
                 
                

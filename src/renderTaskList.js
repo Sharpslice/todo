@@ -1,48 +1,72 @@
 import loadExpanded from "./renderExpanded";
 import loadProjects from "./renderProjectList";
 import { listOfProjects, addTask } from "./toDoFactory";
-import { isDate ,isToday} from "date-fns";
+import { addDays,isSameDay} from "date-fns";
 
 
-export default function loadTaskList(projectName) {
+export default function loadTaskList(projectName =null, filter ={}) {
+
+    let tasks =[];
+    //this is where it should filter
+    if(projectName)
+    {
+        tasks = localStorage.getItem(projectName);
+        tasks = JSON.parse(tasks);  
+        console.log(tasks);
+    }
+    else if (filter.today)
+    {   
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+
+        tasks = tasks.filter(task=>isSameDay(task.dueDate,filter.today))
+        console.log(tasks);
+    }
+    else if(filter.next7)
+    {
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+        console.log("hello")
+
+
+    }
+    else if(filter.all)
+    {
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+        console.log(tasks);
+    }
     
-    let list = getExistingTaskTitles();
-    
-    let tasks = localStorage.getItem(projectName);
-    tasks = JSON.parse(tasks);
-
-    tasks.forEach(task =>{
-        if(!list.includes(task.title)){
-            let date = convertStrToDate(task.dueDate);
-            if(isToday(date)){
-                const {taskItem,taskInput} = createTaskTile(task);
-
-
-
-
-            moveTasks(task,taskItem);
-            
-            taskInput.addEventListener("click",(e)=>
-                {
-                    moveTasks(task,taskItem);
-                    updateLocalStorage(tasks,task,projectName,list);
-                });
-
-            taskItem.addEventListener("click",(e)=>{
-                loadExpanded(task);
-            })
-            }
-            else{
-                console.log("false");
-            }
-            
-        }
+    tasks.forEach((task,index) =>{
+        
+        renderTasks(task,tasks,index)
 });
 }
-function convertStrToDate(dateStr)
-{
-    return new Date(dateStr)
+
+
+
+function renderTasks(task,tasks,index){
+    const {taskItem,taskInput} = createTaskTile(task);
+    moveTasks(task,taskItem);
+            
+    taskInput.addEventListener("click",(e)=>
+        {
+            console.log(index)
+            moveTasks(task,taskItem);
+            updateLocalStorage(tasks,task,index);
+        });
+
+    taskItem.addEventListener("click",(e)=>{
+        loadExpanded(task);
+    })
 }
+
 function moveTasks(task,taskItem){
     const taskList = document.getElementById("taskList")
     const completedtaskList = document.getElementById("completedTaskList")
@@ -67,18 +91,24 @@ function moveTasks(task,taskItem){
     }
 }
 
-function updateLocalStorage(tasks,task,projectName,list){
-    const updatedTasks = tasks.map(t => t.title === task.title ? { ...t, isCompleted: task.isCompleted } : t);
-    localStorage.setItem(projectName,JSON.stringify(updatedTasks));
-    console.log(updatedTasks)
+function updateLocalStorage(tasks,task,index){
+    const taskListByProject = tasks.reduce((acc, task) => {
+        if (!acc[task.projectName]) {
+            acc[task.projectName] = [];
+        }
+        acc[task.projectName].push(task); // Group tasks by project name
+        return acc;
+    }, {});
 
-    list = getExistingTaskTitles();
+    // Store the tasks for each project in localStorage
+    Object.keys(taskListByProject).forEach(projectName => {
+        localStorage.setItem(projectName, JSON.stringify(taskListByProject[projectName]));
+    });
+
+    
 }
 
-function getExistingTaskTitles() {
-    const taskNames = document.querySelectorAll("#taskList li span, #completedTaskList li span");
-    return Array.from(taskNames).map(span => span.textContent.trim());
-}
+
 
 function createTaskTile(task){
     const taskItem = document.createElement("li");
