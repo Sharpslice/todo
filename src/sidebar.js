@@ -21,6 +21,13 @@ export function setUpButtonEventListeners(){
         loadTaskList(null,{today : startOfToday()})
     })
 
+    const next7 = document.getElementById("next7");
+    next7.addEventListener("click",e=>{
+        loadContent("next 7 days");
+        loadTaskList(null,{next7: true});
+    })
+
+
     const allView = document.getElementById("allTasks");
     allView.addEventListener("click",e=>{
         loadContent("All")

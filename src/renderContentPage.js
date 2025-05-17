@@ -10,8 +10,6 @@ export default function loadContent(projectName){
     content.innerHTML='';
     const projectHeader = createHeader(projectName);
     
-
-    
     const form = createTaskForm(projectName);
     
     

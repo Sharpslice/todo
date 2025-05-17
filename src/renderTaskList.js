@@ -20,8 +20,19 @@ export default function loadTaskList(projectName =null, filter ={}) {
         tasks = keys.map((key)=>{
            return JSON.parse(localStorage.getItem(key));
         }).flat();
+
         tasks = tasks.filter(task=>isSameDay(task.dueDate,filter.today))
         console.log(tasks);
+    }
+    else if(filter.next7)
+    {
+        const keys = Object.keys(localStorage);
+        tasks = keys.map((key)=>{
+           return JSON.parse(localStorage.getItem(key));
+        }).flat();
+        console.log("hello")
+
+
     }
     else if(filter.all)
     {
@@ -37,6 +48,8 @@ export default function loadTaskList(projectName =null, filter ={}) {
         renderTasks(task,tasks,index)
 });
 }
+
+
 
 function renderTasks(task,tasks,index){
     const {taskItem,taskInput} = createTaskTile(task);

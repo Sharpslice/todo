@@ -1,10 +1,10 @@
-import './styles.css';
-import './components.css';
-import './sidebar.css';
-import './content.css';
-import './expanded.css';
-import './tasks.css';
-import './dropdown.css';
+import './css/styles.css';
+import './css/components.css';
+import './css/sidebar.css';
+
+import './css/expanded.css';
+import './css/tasks.css';
+import './css/dropdown.css';
 
 import { setUpButtonEventListeners } from './sidebar';
 import loadProjects from './renderProjectList';
